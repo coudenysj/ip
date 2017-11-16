@@ -1,19 +1,14 @@
 language: php
 php:
-    - '5.6'
-    - '7.0'
     - '7.1'
     - '7.2'
-    - 'hhvm'
-
-matrix:
-    allow_failures:
-        - php: hhvm
 
 install:
     - composer install
-    - composer require --dev --prefer-dist doctrine/dbal:^2.3 phpunit/phpunit:^5.7
+    - composer require --dev --prefer-dist doctrine/dbal:^2.3 phpunit/phpunit:^6.0 squizlabs/php_codesniffer:^3.0
 script:
+    - find src -name *\.php | xargs -n1 php -l
+    - ./vendor/bin/phpcs --no-cache --standard=PSR2 --runtime-set ignore_warnings_on_exit true src
     - ./vendor/bin/phpunit
 
 sudo: false
