@@ -21,7 +21,7 @@ class IpTypeTest extends TestCase
 
     /**
      * @test
-     * @expectedException \PHPUnit_Framework_Error
+     * @expectedException \PHPUnit\Framework\Exception
      */
     public function testIpTypeEmitsUserDeprecatedError()
     {
