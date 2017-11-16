@@ -16,8 +16,8 @@ use Doctrine\DBAL\Types\Type;
  */
 abstract class AbstractType extends Type
 {
-    const NAME = 'ip';
-    const IP_LENGTH = 16;
+    public const NAME = 'ip';
+    protected const IP_LENGTH = 16;
 
     /**
      * @return string
@@ -49,7 +49,7 @@ abstract class AbstractType extends Type
 
         // PostgreSQL will return the binary data as a resource instead of a
         // string (like MySQL).
-        if (is_resource($value) && get_resource_type($value) === 'stream') {
+        if (\is_resource($value) && get_resource_type($value) === 'stream') {
             $value = stream_get_contents($value);
         }
         if (empty($value)) {

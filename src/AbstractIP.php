@@ -27,7 +27,7 @@ abstract class AbstractIP implements IpInterface
      * custom formatter for consistency by default if the user has not set one
      * globally.
      */
-    protected function getProtocolFormatter(): ProtocolFormatterInterface
+    protected static function getProtocolFormatter(): ProtocolFormatterInterface
     {
         if (null === self::$formatter) {
             self::$formatter = new ConsistentFormatter;
@@ -151,7 +151,7 @@ abstract class AbstractIP implements IpInterface
     {
         // Don't use strlen() directly to prevent incorrect lengths resulting
         // from null bytes being read as the end of the string.
-        return strlen(bin2hex($ip)) / 2;
+        return \strlen(\bin2hex($ip)) / 2;
     }
 
     protected function generateBinaryMask(int $cidr, int $length): string
@@ -166,7 +166,7 @@ abstract class AbstractIP implements IpInterface
         }
         // Since it takes 4 bits per hexadecimal, how many sections of complete
         // 1's do we have (f's)?
-        $mask = str_repeat('f', floor($cidr / 4));
+        $mask = str_repeat('f', (int) floor($cidr / 4));
         // Now we have less than four 1 bits left we need to determine what
         // hexadecimal character should be added next. Of course, we should only
         // add them in there are 1 bits leftover to prevent going over the

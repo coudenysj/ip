@@ -10,7 +10,7 @@ class IPTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        if (defined('HHVM_VERSION')) {
+        if (\defined('HHVM_VERSION')) {
             $this->markTestSkipped('Skipping deprecated error test on HHVM.');
         }
     }
@@ -21,6 +21,6 @@ class IPTest extends TestCase
      */
     public function testDeprecatedIpEmitsUserError()
     {
-        $ip = new IP('12.34.56.78');
+        new IP('12.34.56.78');
     }
 }

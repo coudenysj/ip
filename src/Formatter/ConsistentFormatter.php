@@ -11,15 +11,13 @@ class ConsistentFormatter extends NativeFormatter
      */
     public function ntop(string $binary): string
     {
-        if (is_string($binary)) {
-            $hex = bin2hex($binary);
-            $length = strlen($hex) / 2;
-            if ($length === 16) {
-                return $this->ntopVersion6($hex);
-            }
-            if ($length === 4) {
-                return $this->ntopVersion4($binary);
-            }
+        $hex = bin2hex($binary);
+        $length = strlen($hex) / 2;
+        if ($length === 16) {
+            return $this->ntopVersion6($hex);
+        }
+        if ($length === 4) {
+            return $this->ntopVersion4($binary);
         }
         throw new FormatException($binary);
     }

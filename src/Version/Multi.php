@@ -48,7 +48,7 @@ class Multi extends IPv6 implements MultiVersionInterface
      * Get the default embedding strategy set. Default to the IPv4-mapped IPv6
      * embedding strategy if the user has not set one globally.
      */
-    private function getDefaultEmbeddingStrategy(): EmbeddingStrategyInterface
+    private static function getDefaultEmbeddingStrategy(): EmbeddingStrategyInterface
     {
         return self::$defaultEmbeddingStrategy ?: new MappedEmbeddingStrategy;
     }
@@ -255,6 +255,6 @@ class Multi extends IPv6 implements MultiVersionInterface
      */
     private function isCidrVersion4Appropriate(int $cidr): bool
     {
-        return is_int($cidr) && $cidr <= 32;
+        return \is_int($cidr) && $cidr <= 32;
     }
 }

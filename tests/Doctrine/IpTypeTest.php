@@ -11,10 +11,10 @@ class IpTypeTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        if (!class_exists('Doctrine\DBAL\Types\Type')) {
+        if (!class_exists(Type::class)) {
             $this->markTestSkipped('Skipping test that requires "doctrine/dbal".');
         }
-        if (defined('HHVM_VERSION')) {
+        if (\defined('HHVM_VERSION')) {
             $this->markTestSkipped('Skipping deprecated error test on HHVM.');
         }
     }
@@ -26,6 +26,6 @@ class IpTypeTest extends TestCase
     public function testIpTypeEmitsUserDeprecatedError()
     {
         Type::addType('deprecated_ip', IpType::class);
-        $deprecatedIpType = Type::getType('deprecated_ip');
+        Type::getType('deprecated_ip');
     }
 }

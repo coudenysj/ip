@@ -41,7 +41,7 @@ class IPv4 extends AbstractIP implements Version4Interface
                 }
                 $binary = $ip;
             }
-        } catch(Exception\IpException $e) {
+        } catch (Exception\IpException $e) {
             throw new Exception\InvalidIpAddressException($ip, $e);
         }
         parent::__construct($binary);

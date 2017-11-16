@@ -10,7 +10,7 @@ use Darsyn\IP\Version\IPv4 as IP;
  */
 class IPv4Type extends AbstractType
 {
-    const IP_LENGTH = 4;
+    protected const IP_LENGTH = 4;
 
     /**
      * {@inheritDoc}
