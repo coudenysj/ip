@@ -20,7 +20,7 @@ class PackingException extends IpException
         parent::__construct(sprintf(
             'Could not pack IPv4 address into IPv6 binary string using the "%s" strategy.',
             get_class($embeddingStrategy)
-        ));
+        ), 0, $previous);
     }
 
     public function getSuppliedBinary(): string

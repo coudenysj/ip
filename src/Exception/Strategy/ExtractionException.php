@@ -20,7 +20,7 @@ class ExtractionException extends IpException
         parent::__construct(sprintf(
             'Could not extract IPv4 address from IPv6 binary string using the "%s" strategy.',
             get_class($embeddingStrategy)
-        ));
+        ), 0, $previous);
     }
 
     public function getSuppliedBinary(): string
