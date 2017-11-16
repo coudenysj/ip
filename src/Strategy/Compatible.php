@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Darsyn\IP\Strategy;
 
@@ -9,7 +9,7 @@ class Compatible extends AbstractStrategy
     /**
      * {@inheritDoc}
      */
-    public function isEmbedded($binary)
+    public function isEmbedded(string $binary): bool
     {
         return $this->getBinaryLength($binary) === 16
             && substr($binary, 0, 12) === "\0\0\0\0\0\0\0\0\0\0\0\0";
@@ -18,7 +18,7 @@ class Compatible extends AbstractStrategy
     /**
      * {@inheritDoc}
      */
-    public function extract($binary)
+    public function extract(string $binary): string
     {
         if ($this->getBinaryLength($binary) === 16) {
             return substr($binary, 12, 4);
@@ -29,7 +29,7 @@ class Compatible extends AbstractStrategy
     /**
      * {@inheritDoc}
      */
-    public function pack($binary)
+    public function pack(string $binary): string
     {
         if ($this->getBinaryLength($binary) === 4) {
             return "\0\0\0\0\0\0\0\0\0\0\0\0" . $binary;

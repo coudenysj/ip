@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Darsyn\IP\Exception\Formatter;
 
@@ -9,22 +9,13 @@ class FormatException extends IpException
     /** @var string $binary */
     private $binary;
 
-    /**
-     * Constructor
-     *
-     * @param string $binary
-     * @param \Exception|null $previous
-     */
-    public function __construct($binary, \Exception $previous = null)
+    public function __construct(string $binary, \Exception $previous = null)
     {
         $this->binary = $binary;
         parent::__construct('Cannot format invalid binary sequence; must be a string either 4 or 16 bytes long.', null, $previous);
     }
 
-    /**
-     * @return string
-     */
-    public function getSuppliedBinary()
+    public function getSuppliedBinary(): string
     {
         return $this->binary;
     }

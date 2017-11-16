@@ -1,20 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Darsyn\IP\Exception;
 
 class InvalidCidrException extends IpException
 {
-    /** @var mixed $cidr */
+    /** @var int $cidr */
     private $cidr;
 
-    /**
-     * Constructor
-     * .
-     * @param int $cidr
-     * @param int $length
-     * @param \Exception|null $previous
-     */
-    public function __construct($cidr, $length, \Exception $previous = null)
+    public function __construct(int $cidr, int $length, \Exception $previous = null)
     {
         $this->cidr = $cidr;
         $message = is_int($length)
@@ -23,10 +16,7 @@ class InvalidCidrException extends IpException
         parent::__construct($message, null, $previous);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSuppliedCidr()
+    public function getSuppliedCidr(): int
     {
         return $this->cidr;
     }

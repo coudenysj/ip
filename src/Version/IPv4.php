@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Darsyn\IP\Version;
 
@@ -27,7 +27,7 @@ class IPv4 extends AbstractIP implements Version4Interface
     /**
      * {@inheritDoc}
      */
-    public function __construct($ip)
+    public function __construct(string $ip)
     {
         try {
             // Convert from protocol notation to binary sequence.
@@ -50,7 +50,7 @@ class IPv4 extends AbstractIP implements Version4Interface
     /**
      * {@inheritDoc}
      */
-    public function getDotAddress()
+    public function getDotAddress(): string
     {
         try {
             return self::getProtocolFormatter()->ntop($this->getBinary());
@@ -62,7 +62,7 @@ class IPv4 extends AbstractIP implements Version4Interface
     /**
      * {@inheritDoc}
      */
-    public function getVersion()
+    public function getVersion(): int
     {
         return 4;
     }
@@ -70,7 +70,7 @@ class IPv4 extends AbstractIP implements Version4Interface
     /**
      * {@inheritDoc}
      */
-    public function isLinkLocal()
+    public function isLinkLocal(): bool
     {
         return $this->inRange(new static('169.254.0.0'), 16);
     }
@@ -78,7 +78,7 @@ class IPv4 extends AbstractIP implements Version4Interface
     /**
      * {@inheritDoc}
      */
-    public function isLoopback()
+    public function isLoopback(): bool
     {
         return $this->inRange(new static('127.0.0.0'), 8);
     }
@@ -86,7 +86,7 @@ class IPv4 extends AbstractIP implements Version4Interface
     /**
      * {@inheritDoc}
      */
-    public function isMulticast()
+    public function isMulticast(): bool
     {
         return $this->inRange(new static('224.0.0.0'), 4);
     }
@@ -94,7 +94,7 @@ class IPv4 extends AbstractIP implements Version4Interface
     /**
      * {@inheritDoc}
      */
-    public function isPrivateUse()
+    public function isPrivateUse(): bool
     {
         return $this->inRange(new static('10.0.0.0'), 8)
             || $this->inRange(new static('172.16.0.0'), 12)
@@ -104,7 +104,7 @@ class IPv4 extends AbstractIP implements Version4Interface
     /**
      * {@inheritDoc}
      */
-    public function isUnspecified()
+    public function isUnspecified(): bool
     {
         return $this->getBinary() === "\0\0\0\0";
     }

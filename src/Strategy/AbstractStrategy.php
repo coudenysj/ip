@@ -1,23 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Darsyn\IP\Strategy;
 
 abstract class AbstractStrategy implements EmbeddingStrategyInterface
 {
-    /**
-     * @param string $binary
-     * @return integer
-     */
-    protected function getBinaryLength($binary)
+    protected function getBinaryLength(string $binary): int
     {
         return strlen(bin2hex($binary)) / 2;
     }
 
-    /**
-     * @param string $hex
-     * @return string
-     */
-    protected function getBinaryFromHex($hex)
+    protected function getBinaryFromHex(string $hex): string
     {
         return pack('H*', $hex);
     }

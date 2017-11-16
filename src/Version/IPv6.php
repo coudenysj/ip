@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Darsyn\IP\Version;
 
@@ -28,7 +28,7 @@ class IPv6 extends AbstractIP implements Version6Interface
     /**
      * {@inheritDoc}
      */
-    public function __construct($ip)
+    public function __construct(string $ip)
     {
         try {
             // Convert from protocol notation to binary sequence.
@@ -47,7 +47,7 @@ class IPv6 extends AbstractIP implements Version6Interface
     /**
      * {@inheritDoc}
      */
-    public function getExpandedAddress()
+    public function getExpandedAddress(): string
     {
         // Convert the 16-byte binary sequence into a hexadecimal-string
         // representation, insert a colon between every block of 4 characters,
@@ -58,19 +58,19 @@ class IPv6 extends AbstractIP implements Version6Interface
     /**
      * {@inheritDoc}
      */
-    public function getCompactedAddress()
+    public function getCompactedAddress(): string
     {
         try {
             return self::getProtocolFormatter()->ntop($this->getBinary());
         } catch (Exception\Formatter\FormatException $e) {
-            throw new Exception\IpException('An unknown error occured internally.', null, $e);
+            throw new Exception\IpException('An unknown error occured internally.', 0, $e);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getVersion()
+    public function getVersion(): int
     {
         return 6;
     }
@@ -78,7 +78,7 @@ class IPv6 extends AbstractIP implements Version6Interface
     /**
      * {@inheritDoc}
      */
-    public function isLinkLocal()
+    public function isLinkLocal(): bool
     {
         return $this->inRange(new static('fe80::'), 10);
     }
@@ -86,7 +86,7 @@ class IPv6 extends AbstractIP implements Version6Interface
     /**
      * {@inheritDoc}
      */
-    public function isLoopback()
+    public function isLoopback(): bool
     {
         return $this->inRange(new static('::1'), 128);
     }
@@ -94,7 +94,7 @@ class IPv6 extends AbstractIP implements Version6Interface
     /**
      * {@inheritDoc}
      */
-    public function isMulticast()
+    public function isMulticast(): bool
     {
         return $this->inRange(new static('ff00::'), 8);
     }
@@ -102,7 +102,7 @@ class IPv6 extends AbstractIP implements Version6Interface
     /**
      * {@inheritDoc}
      */
-    public function isPrivateUse()
+    public function isPrivateUse(): bool
     {
         return $this->inRange(new static('fd00::'), 8);
     }
@@ -110,7 +110,7 @@ class IPv6 extends AbstractIP implements Version6Interface
     /**
      * {@inheritDoc}
      */
-    public function isUnspecified()
+    public function isUnspecified(): bool
     {
         return $this->getBinary() === "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Darsyn\IP;
 
@@ -17,11 +17,7 @@ abstract class AbstractIP implements IpInterface
      */
     private $ip;
 
-    /**
-     * @static
-     * @param \Darsyn\IP\Formatter\ProtocolFormatterInterface $formatter
-     */
-    public static function setProtocolFormatter(ProtocolFormatterInterface $formatter)
+    public static function setProtocolFormatter(ProtocolFormatterInterface $formatter): void
     {
         self::$formatter = $formatter;
     }
@@ -30,10 +26,8 @@ abstract class AbstractIP implements IpInterface
      * Get the protocol formatter set by the user, falling back to using our
      * custom formatter for consistency by default if the user has not set one
      * globally.
-     *
-     * @return \Darsyn\IP\Formatter\ProtocolFormatterInterface
      */
-    protected function getProtocolFormatter()
+    protected function getProtocolFormatter(): ProtocolFormatterInterface
     {
         if (null === self::$formatter) {
             self::$formatter = new ConsistentFormatter;
@@ -44,10 +38,9 @@ abstract class AbstractIP implements IpInterface
     /**
      * Constructor
      *
-     * @param string $ip
      * @throws \Darsyn\IP\Exception\InvalidIpAddressException
      */
-    public function __construct($ip)
+    public function __construct(string $ip)
     {
         $this->ip = $ip;
     }
@@ -55,7 +48,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    final public function getBinary()
+    final public function getBinary(): string
     {
         return $this->ip;
     }
@@ -63,7 +56,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function isVersion($version)
+    public function isVersion(int $version): bool
     {
         return $this->getVersion() === $version;
     }
@@ -71,7 +64,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function isVersion4()
+    public function isVersion4(): bool
     {
         return $this->isVersion(4);
     }
@@ -79,7 +72,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function isVersion6()
+    public function isVersion6(): bool
     {
         return $this->isVersion(6);
     }
@@ -87,7 +80,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function getNetworkIp($cidr)
+    public function getNetworkIp(int $cidr): IpInterface
     {
         // Providing that the CIDR is valid, bitwise AND the IP address binary
         // sequence with the mask generated from the CIDR.
@@ -100,7 +93,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function getBroadcastIp($cidr)
+    public function getBroadcastIp(int $cidr): IpInterface
     {
         // Providing that the CIDR is valid, bitwise OR the IP address binary
         // sequence with the inverse of the mask generated from the CIDR.
@@ -113,7 +106,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function inRange(IpInterface $ip, $cidr)
+    public function inRange(IpInterface $ip, int $cidr): bool
     {
         try {
             return $this->getNetworkIp($cidr)->getBinary() === $ip->getNetworkIp($cidr)->getBinary();
@@ -125,7 +118,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function isMapped()
+    public function isMapped(): bool
     {
         return (new Strategy\Mapped)->isEmbedded($this->getBinary());
     }
@@ -133,7 +126,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function isDerived()
+    public function isDerived(): bool
     {
         return (new Strategy\Derived)->isEmbedded($this->getBinary());
     }
@@ -141,7 +134,7 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function isCompatible()
+    public function isCompatible(): bool
     {
         return (new Strategy\Compatible)->isEmbedded($this->getBinary());
     }
@@ -149,19 +142,19 @@ abstract class AbstractIP implements IpInterface
     /**
      * {@inheritDoc}
      */
-    public function isEmbedded()
+    public function isEmbedded(): bool
     {
         return false;
     }
 
-    protected function getBinaryLength($ip)
+    protected function getBinaryLength(string $ip): int
     {
         // Don't use strlen() directly to prevent incorrect lengths resulting
         // from null bytes being read as the end of the string.
         return strlen(bin2hex($ip)) / 2;
     }
 
-    protected function generateBinaryMask($cidr, $length)
+    protected function generateBinaryMask(int $cidr, int $length): string
     {
         if (!is_int($cidr)  || !is_int($length)
             || $cidr < 0    || $length < 0

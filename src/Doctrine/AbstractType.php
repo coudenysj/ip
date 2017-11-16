@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Darsyn\IP\Doctrine;
 
 use Darsyn\IP\Exception\InvalidIpAddressException;
+use Darsyn\IP\IpInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -21,18 +22,18 @@ abstract class AbstractType extends Type
     /**
      * @return string
      */
-    abstract protected function getIpClass();
+    abstract protected function getIpClass(): string;
 
     /**
      * @param $ip
      * @return \Darsyn\IP\IpInterface
      */
-    abstract protected function createIpObject($ip);
+    abstract protected function createIpObject(string $ip): IpInterface;
 
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return $platform->getBinaryTypeDeclarationSQL(['length' => static::IP_LENGTH]);
     }
@@ -40,7 +41,7 @@ abstract class AbstractType extends Type
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?IpInterface
     {
         if (is_a($value, $this->getIpClass())) {
             return $value;
@@ -66,7 +67,7 @@ abstract class AbstractType extends Type
     /**
      * {@inheritdoc}
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if (empty($value)) {
             return null;
@@ -83,7 +84,7 @@ abstract class AbstractType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }
@@ -91,7 +92,7 @@ abstract class AbstractType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getBindingType()
+    public function getBindingType(): int
     {
         return \PDO::PARAM_LOB;
     }
@@ -99,7 +100,7 @@ abstract class AbstractType extends Type
     /**
      * {@inheritdoc}
      */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }
