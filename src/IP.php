@@ -19,7 +19,7 @@ namespace Darsyn\IP;
  * @copyright   2015 Zander Baldwin
  * @license     MIT/X11 <http://j.mp/mit-license>
  */
-class IP
+class IP implements \JsonSerializable
 {
     const CIDR4TO6 = 96;
     const VERSION_4 = 4;
@@ -357,5 +357,15 @@ class IP
     public function __toString()
     {
         return $this->getBinary();
+    }
+
+    /**
+     * @return string
+     */
+    public function jsonSerialize()
+    {
+        return implode('', array_map(function ($chunk) {
+            return '\\u' . strtolower($chunk);
+        }, str_split(unpack('H*hex', $this->getBinary())['hex'], 4)));
     }
 }

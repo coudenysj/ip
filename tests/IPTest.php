@@ -802,4 +802,32 @@ class IPTest extends \PHPUnit_Framework_TestCase
         $ip = new IP($ip);
         $this->assertEquals($isPrivateUse, $ip->isPrivateUse());
     }
+
+    public function jsonStrings()
+    {
+        return array(
+            array('2001:db8::a60:8a2e:370:7334',             '"\u2001\u0db8\u0000\u0000\u0a60\u8a2e\u0370\u7334"'),
+            array('2d7f:424d:c574:632e:8d9d:847d:9f30:b62a', '"\u2d7f\u424d\uc574\u632e\u8d9d\u847d\u9f30\ub62a"'),
+            array('10d4:ebf6:3401:e851:b3fd:0d78:ba5a:bf44', '"\u10d4\uebf6\u3401\ue851\ub3fd\u0d78\uba5a\ubf44"'),
+            array('7bf9:a81f:7047:b07a:f891:a849:25c7:52c8', '"\u7bf9\ua81f\u7047\ub07a\uf891\ua849\u25c7\u52c8"'),
+            array('18.118.59.40',                            '"\u0000\u0000\u0000\u0000\u0000\u0000\u1276\u3b28"'),
+            array('100.39.68.128',                           '"\u0000\u0000\u0000\u0000\u0000\u0000\u6427\u4480"'),
+            array('68.192.97.34',                            '"\u0000\u0000\u0000\u0000\u0000\u0000\u44c0\u6122"'),
+        );
+    }
+
+    /**
+     * Test: Can Serialise Into JSON
+     *
+     * @test
+     * @dataProvider jsonStrings
+     * @param string $ip
+     * @param string $serialised
+     * @return void
+     */
+    public function testCanSerialiseIntoJson($ip, $serialised)
+    {
+        $ip = new IP($ip);
+        $this->assertSame($serialised, json_encode($ip));
+    }
 }
