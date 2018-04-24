@@ -28,5 +28,8 @@
     },
     "suggest": {
         "doctrine/dbal": "to use IP as a column type"
+    },
+    "require-dev": {
+        "phpbench/phpbench": "^1.0@dev"
     }
 }
